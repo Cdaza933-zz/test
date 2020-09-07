@@ -110,6 +110,10 @@ if ("serviceWorker" in navigator) {
         // doesn't already exist, it's cloned from the template.
 
         app.updateTimetableCard = function(data) {
+
+
+    
+
           var key = data.key;
           var dataLastUpdated = new Date(data.created);
           var schedules = data.schedules;
@@ -138,12 +142,12 @@ if ("serviceWorker" in navigator) {
                 schedule.message;
             }
           }
-
           if (app.isLoading) {
-            app.spinner.setAttribute("hidden", true);
-            app.container.removeAttribute("hidden");
+            window.cardLoadTime = performance.now();
+            app.spinner.setAttribute('hidden', true);
+            app.container.removeAttribute('hidden');
             app.isLoading = false;
-          }
+    }
         };
 
         /*****************************************************************************
@@ -154,9 +158,9 @@ if ("serviceWorker" in navigator) {
 
         app.getSchedule = function(key, label) {
           var url = "https://api-ratp.pierre-grimaud.fr/v3/schedules/" + key;
-
           var request = new XMLHttpRequest();
           request.onreadystatechange = function() {
+            window.ApiCall = performance.now();
             if (request.readyState === XMLHttpRequest.DONE) {
               if (request.status === 200) {
                 var response = JSON.parse(request.response);
